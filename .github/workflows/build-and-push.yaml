@@ -43,7 +43,6 @@ jobs:
           flavor: |
             latest=false
 
-            
       - name: Build Docker image
         id: build
         uses: docker/build-push-action@v6
@@ -57,7 +56,13 @@ jobs:
 
       - name: test and push
         run: |
-          IMG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}"
+
+          echo ${{ steps.meta.outputs.tags }}
+          echo ${{ steps.meta.outputs.version }}
+          echo ${{ steps.meta.outputs.labels }}
+          echo ${{ steps.meta.outputs }}
+          # NOTE: "tags" is not tags, it's the full docker image path
+          IMG="${{ steps.meta.outputs.tags }}"
           docker run --env PYGEOAPI_CONFIG=/pkp/tests/pygeoapi-test-config.yaml --env PYGEOAPI_OPENAPI=/pygeoapi/tests/pygeoapi-test-openapi.yml --entrypoint python3 "${IMG}" -m pytest || exit 1
           docker run --entrypoint flake8 "${IMG}" pygeoapi_kubernetes_papermill tests || exit 1
           docker run --entrypoint mypy "${IMG}" pygeoapi_kubernetes_papermill tests || exit 1
@@ -69,6 +74,6 @@ jobs:
       - name: Publish Helm chart
         run: |
           helm package pygeoapi-eoxhub
-          HELM_PACKAGE="pygeoapi-eoxhub-${{ steps.meta.outputs.TAG }}.tgz"
+          HELM_PACKAGE="pygeoapi-eoxhub-${{ steps.meta.outputs.version }}.tgz"
           echo "Uploading $HELM_PACKAGE"
           curl --user "${{ secrets.CHARTMUSEUM_USERNAME }}:${{ secrets.CHARTMUSEUM_PASSWORD }}" --data-binary "@${HELM_PACKAGE}" https://charts-public.hub.eox.at/api/charts
