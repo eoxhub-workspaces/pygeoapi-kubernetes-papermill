@@ -1,3 +1,10 @@
+## 1.8.6 (2025-04-03)
+
+### Fix
+
+- stupid GH action debug #6
+- Use new image repo in chart
+
 ## 1.8.5 (2025-04-03)
 
 ### Fix
