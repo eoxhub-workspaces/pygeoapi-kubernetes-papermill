@@ -30,7 +30,7 @@ spec:
       serviceAccountName: {{ include "base.fullname" . }}
       containers:
         - name: {{ include "base.name" . }}
-          image: eurodatacube/pygeoapi-eoxhub:{{ .Chart.AppVersion }}
+          image: ghcr.io/eoxhub-workspaces/pygeoapi-kubernetes-papermill:{{ .Chart.AppVersion }}
           ports:
             - name: http
               containerPort: 80
