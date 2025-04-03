@@ -56,11 +56,6 @@ jobs:
 
       - name: test and push
         run: |
-
-          echo ${{ steps.meta.outputs.tags }}
-          echo ${{ steps.meta.outputs.version }}
-          echo ${{ steps.meta.outputs.labels }}
-          echo ${{ steps.meta.outputs }}
           # NOTE: "tags" is not tags, it's the full docker image path
           IMG="${{ steps.meta.outputs.tags }}"
           docker run --env PYGEOAPI_CONFIG=/pkp/tests/pygeoapi-test-config.yaml --env PYGEOAPI_OPENAPI=/pygeoapi/tests/pygeoapi-test-openapi.yml --entrypoint python3 "${IMG}" -m pytest || exit 1
