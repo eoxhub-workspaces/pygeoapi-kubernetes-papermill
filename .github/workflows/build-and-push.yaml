@@ -15,15 +15,36 @@ jobs:
         id: get_image_tag
         run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       # NOTE: this step is necessary because otherwise the build-push-action can't push /o\
       #       https://github.com/docker/build-push-action/issues/100#issuecomment-715352826
-      - uses: docker/setup-buildx-action@v1
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
+      - uses: docker/setup-buildx-action@v3
+        
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=false
+
+            
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@6
+        with:
+          context: .
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+          cache-to: type=inline
 
       - name: Build
         id: docker_build
@@ -38,7 +59,7 @@ jobs:
 
       - name: test and push
         run: |
-          IMG="eurodatacube/pygeoapi-eoxhub:${{ steps.get_image_tag.outputs.TAG }}"
+          IMG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.get_image_tag.outputs.TAG }}"
           docker run --env PYGEOAPI_CONFIG=/pkp/tests/pygeoapi-test-config.yaml --env PYGEOAPI_OPENAPI=/pygeoapi/tests/pygeoapi-test-openapi.yml --entrypoint python3 "${IMG}" -m pytest || exit 1
           docker run --entrypoint flake8 "${IMG}" pygeoapi_kubernetes_papermill tests || exit 1
           docker run --entrypoint mypy "${IMG}" pygeoapi_kubernetes_papermill tests || exit 1
