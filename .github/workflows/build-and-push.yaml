@@ -56,17 +56,6 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main,mode=max
 
-      - name: Build
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          load: true
-          tags: |
-            eurodatacube/pygeoapi-eoxhub:${{ steps.get_image_tag.outputs.TAG }}
-
-      - name: "Git checkout"
-        uses: actions/checkout@v2
-
       - name: test and push
         run: |
           IMG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.get_image_tag.outputs.TAG }}"
