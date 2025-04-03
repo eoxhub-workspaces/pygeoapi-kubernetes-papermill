@@ -1,3 +1,10 @@
+## 1.8.4 (2025-04-03)
+
+### Fix
+
+- stupid GH action debug #4
+- try improve caching behavior
+
 ## 1.8.3 (2025-04-03)
 
 ### Fix
