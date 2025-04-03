@@ -14,11 +14,15 @@ jobs:
   build_and_push:
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+        # attestations: write
+      id-token: write
 
     steps:
-      - name: Get the tag
-        id: get_image_tag
-        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
