@@ -713,7 +713,7 @@ def conda_store_group_volume_mounts(conda_store_groups: list[str]) -> ExtraConfi
         volumes=[
             k8s_client.V1Volume(
                 persistent_volume_claim=k8s_client.V1PersistentVolumeClaimVolumeSource(
-                    claim_name="conda-store-core-share",
+                    claim_name="conda-store-share",
                 ),
                 name="conda-store",
             )

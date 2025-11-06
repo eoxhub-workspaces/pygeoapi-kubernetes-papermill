@@ -586,7 +586,7 @@ def test_conda_store_group_creates_mounts_and_setup(create_pod_kwargs):
         m.mount_path for m in job_pod_spec.pod_spec.containers[0].volume_mounts
     ]
 
-    assert "conda-store-core-share" in [
+    assert "conda-store-share" in [
         v.persistent_volume_claim.claim_name for v in job_pod_spec.pod_spec.volumes
     ]
 
