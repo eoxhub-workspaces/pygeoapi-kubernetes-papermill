@@ -57,11 +57,11 @@ spec:
               port: 80
           resources:
             limits:
-              cpu: "200m"
-              memory: "300Mi"
+              cpu: {{ .Values.pygeoapi.resources.limits.cpu }}
+              memory: {{ .Values.pygeoapi.resources.limits.memory }}
             requests:
-              cpu: "100m"
-              memory: "150Mi"
+              cpu: {{ .Values.pygeoapi.resources.requests.cpu }}
+              memory: {{ .Values.pygeoapi.resources.requests.memory }}
           volumeMounts:
           - name: pygeoapi-config
             mountPath: "/pygeoapi/local.config.yml"

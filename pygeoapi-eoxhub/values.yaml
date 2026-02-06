@@ -61,6 +61,14 @@ pygeoapi:
   tolerations: []
   # tolerations: [{"key": "hub.eox.at/processing", "operator": "Exists", "effect": "NoSchedule"}]
   logLevel: INFO  # "DEBUG" for more verbosity
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 64m
+    limits:
+      memory: 300Mi
+      cpu: 300m
+  
 
 secrets: []
 autoMountSecrets: False
