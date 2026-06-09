@@ -46,8 +46,8 @@ data:
                 - api
                 - processing
             keywords_type: theme
-            terms_of_service: https://creativecommons.org/licenses/by/4.0/
-            url: https://eurodatacube.com/dashboard
+            terms_of_service: https://eox.at/service-terms-and-conditions/
+            url: https://documentation.hub.eox.at/headless-execution/
         license:
             name: CC-BY 4.0 license
             url: https://creativecommons.org/licenses/by/4.0/
@@ -62,10 +62,10 @@ data:
             stateorprovince: Vienna
             postalcode: 1090
             country: Österreich / Austria
-            phone: +43 664 6207655
+            phone: null
             fax: null
             email: hub@eox.at
-            url: https://eurodatacube.com/support
+            url: https://eox.at/contact/
             hours: null
             instructions: null
             role: pointOfContact
